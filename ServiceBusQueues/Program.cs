@@ -1,3 +1,6 @@
+using Azure.Messaging.ServiceBus;
+using Microsoft.Extensions.Azure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAzureClients(builder =>
+{
+    var connectionString = "";
+
+   builder.AddServiceBusClient(connectionString); 
+});
 
 
 var app = builder.Build();

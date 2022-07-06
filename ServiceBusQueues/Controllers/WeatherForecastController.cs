@@ -37,8 +37,7 @@ namespace ServiceBusQueues.Controllers
         [HttpPost]
         public async Task Post(WeatherForecast data)
         {
-            var connectionString = "";
-            var client = new ServiceBusClient(connectionString);
+            
             var sender = client.CreateSender("add-weather-data");
             var body = JsonSerializer.Serialize(data);
             var message = new ServiceBusMessage(body);
