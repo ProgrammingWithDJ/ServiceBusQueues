@@ -1,3 +1,4 @@
+using Azure.Identity;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Azure;
 
@@ -9,11 +10,16 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+var final = builder.Configuration.GetSection("ConnectionDomain");
 builder.Services.AddAzureClients(builder =>
 {
-    var connectionString = "";
+    
 
-   builder.AddServiceBusClient(connectionString); 
+    builder.AddClient<ServiceBusClient, ServiceBusClientOptions>((_, _, _) =>
+    {
+        return new ServiceBusClient(final.Value, new DefaultAzureCredential());
+    });
+   //builder.AddServiceBusClient(connectionString);  // Removed this since it is not needed for managed Identitu
 });
 
 
